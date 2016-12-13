@@ -7,9 +7,9 @@ extern "C" {
 
 void light_init(void);
 void cmd_light(int argc, char *argv[]);
-void light_red();
-void light_yellow();
-void light_green();
+void light_red(void);
+void light_yellow(void);
+void light_green(void);
 
 #ifdef __cplusplus
 }

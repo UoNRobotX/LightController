@@ -10,8 +10,8 @@ static void e_stop_task(void*);
 
 void e_stop_init()
 {
-    // Set e-stop read pin to input
-    DDRF &= ~(1 << 3);
+    // Setup ADC
+    ADCSRA = (1 << ADEN) | (3 << ADPS0);
 
     static TASK_T e_stop;
 
@@ -24,9 +24,17 @@ void e_stop_init()
 
 void e_stop_task(void *args)
 {
-    if (PINF & (1 << 3))
+    // Start conversion
+    ADMUX = (1 << ADLAR) | (1 << REFS0) | (3 << MUX0);
+    ADCSRA |= (1 << ADSC);
+
+    while(ADCSRA & (1 << ADSC));
+    uint8_t result = ADCH;
+
+    if (result > 150)
     {
         puts_P(PSTR("E-Stop OFF"));
+        light_yellow();
     }
     else
     {

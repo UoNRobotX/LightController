@@ -12,8 +12,8 @@ void light_init()
     // Set light pins as output
     DDRF |= (1 << 0) | (1 << 1) | (1 << 2);
 
-    // Default to red on startup
-    PORTF |= (1 << 0);
+    // Default to red light
+    light_red();
 }
 
 void cmd_light(int argc, char *argv[])
@@ -46,7 +46,7 @@ void cmd_light(int argc, char *argv[])
 void light_red()
 {
     PORTF &= ~((1 << 0) | (1 << 1) | (1 << 2));
-    PORTF |= (1 << 0);
+    PORTF |= (1 << 2);
 }
 
 void light_yellow()
@@ -58,5 +58,5 @@ void light_yellow()
 void light_green()
 {
     PORTF &= ~((1 << 0) | (1 << 1) | (1 << 2));
-    PORTF |= (1 << 2);
+    PORTF |= (1 << 0);
 }
