@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "light.h"
+#include "e_stop.h"
 
 void light_init()
 {
@@ -51,12 +52,14 @@ void light_red()
 
 void light_yellow()
 {
+    if (e_stop_activated()) return;
     PORTF &= ~((1 << 0) | (1 << 1) | (1 << 2));
     PORTF |= (1 << 1);
 }
 
 void light_green()
 {
+    if (e_stop_activated()) return;
     PORTF &= ~((1 << 0) | (1 << 1) | (1 << 2));
     PORTF |= (1 << 0);
 }

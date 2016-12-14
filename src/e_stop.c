@@ -6,6 +6,7 @@
 #include "light.h"
 #include "task.h"
 
+static bool e_stop;
 static void e_stop_task(void*);
 
 void e_stop_init()
@@ -13,13 +14,16 @@ void e_stop_init()
     // Setup ADC
     ADCSRA = (1 << ADEN) | (3 << ADPS0);
 
-    static TASK_T e_stop;
+    static TASK_T task;
 
-    e_stop.func = e_stop_task;
-    e_stop.interval = X_ms(100);
-    e_stop.priority = 2;
-    e_stop.count = -1;
-    task_enqueue(&e_stop, NULL);
+    task.func = e_stop_task;
+    task.interval = X_ms(100);
+    task.priority = 2;
+    task.count = -1;
+    task_enqueue(&task, NULL);
+
+    // Assume e_stop on
+    e_stop = true;
 }
 
 void e_stop_task(void *args)
@@ -33,12 +37,19 @@ void e_stop_task(void *args)
 
     if (result > 150)
     {
+        e_stop = false;
         puts_P(PSTR("E-Stop OFF"));
         light_yellow();
     }
     else
     {
+        e_stop = true;
         puts_P(PSTR("E-Stop ON"));
         light_red();
     }
+}
+
+bool e_stop_activated()
+{
+    return e_stop;
 }
