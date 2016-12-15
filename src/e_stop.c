@@ -39,7 +39,6 @@ void e_stop_task(void *args)
     {
         e_stop = false;
         puts_P(PSTR("E-Stop OFF"));
-        light_yellow();
     }
     else
     {
