@@ -94,9 +94,12 @@ void cmd_light(int argc, char *argv[])
             }
             else if (!strcmp_P(argv[0], PSTR("home")))
             {
-                light_red();
-                mode = HOMING;
-                counter = 0;
+                if (mode != HOMING)
+                {
+                    light_red();
+                    mode = HOMING;
+                    counter = 0;
+                }
             }
             else
             {
